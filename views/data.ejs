@@ -151,7 +151,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                   <a href="/users/logout" class="dropdown-item btn btn-dark text-center text-dark">Logout</a>
-                  <a href="/views/data.ejs" class="dropdown-item btn btn-dark text-center text-dark">User</a>
+                  <a href="/users/data" class="dropdown-item btn btn-dark text-center text-dark">User</a>
                   <a class="dropdown-item text-center" href="#">Something else here</a>
                 </div>
               </li>
@@ -164,7 +164,13 @@
         <canvas id="bigDashboardChart"></canvas>
       </div>
       <div class="content">
-        <!-- Isi Data User di sini!-->
+          {{# each items}}
+          <article class="items">
+              <div>Username: {{ this.username }} </div>
+              <div>Company: {{ this.name }} </div>
+              <div>Email: {{ this.email }} </div>
+          </article>
+
       </div>
       <footer class="footer">
         <div class=" container-fluid ">

@@ -5,7 +5,6 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
 const path = require('path');
-const axios = require('axios');
 
 const app = express();
 
@@ -61,16 +60,24 @@ app.use(function(req, res, next) {
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 app.use(express.static(__dirname + '/public'));
-app.get('/order', (req, res) => {
+
+/*app.get('/order', (req, res) => {
   const url = `https://21198692cddc5991b71d6aa5b5b7e53f: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@outerbloom1.myshopify.com/admin/api/2021-01/orders.json?status=any`
-axios.get(url).then((response) => {
-console.log(response.data)
+  axios.get(url).then((response) => {
+  console.log(response.data)
   })
   .catch((error) => {
       console.log(error);
   });
 
-});
+}); */
+
+// User Data
+/* let sess;
+app.post('/login',(req,res) => {
+    sess = req.session;
+    sess.email = req.body.email;
+}); */
 
 const PORT = process.env.PORT || 1700;
 

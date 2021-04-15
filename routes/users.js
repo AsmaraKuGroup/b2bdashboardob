@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const mongo = require('mongodb');
+const assert = require('assert');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const session = require('express-session');
+const axios = require('axios');
+
 // Load User model
 const User = require('../models/User');
 const { forwardAuthenticated } = require('../config/auth');
@@ -77,7 +82,10 @@ router.post('/register', (req, res) => {
 });
 
 // Login
+let sess;
 router.post('/login', (req, res, next) => {
+  sess = req.session;
+  sess.email = req.body.email;
   passport.authenticate('local', {
     successRedirect: '/dashboard',
     failureRedirect: '/users/login',
@@ -92,5 +100,45 @@ router.get('/logout', (req, res) => {
   // req.flash('success_msg', 'You are logged out');
   res.redirect('/users/login');
 });
+
+// User
+/*router.get('/order', (req, res) => {
+  const url = `https://21198692cddc5991b71d6aa5b5b7e53f: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@outerbloom1.myshopify.com/admin/api/2021-01/orders.json?status=any`
+  axios.get(url).then((response) => {
+  console.log(response.data)
+  })
+  .catch((error) => {
+      console.log(error);
+  });
+
+}); */
+
+router.get('User',(req,res) => {
+  sess = req.session;
+  if(sess.email) {
+    return res.redirect('/data');
+  }
+  res.sendFile('dashboard');
+});
+
+/*router.post('/login',(req,res) => {
+  sess = req.session;
+  sess.email = req.body.email;
+  res.end('done');
+}); */
+
+router.get('/data',(req,res) => {
+  sess = req.session;
+  if(sess.email) {
+      res.write(`<h1>Hello ${sess.email} </h1><br>`);
+      res.end('<a href='+'/logout'+'>Logout</a>');
+  }
+  else {
+      res.write('<h1>Please login first.</h1>');
+      res.end('<a href='+'/'+'>Login</a>');
+  }
+});
+
+
 
 module.exports = router;
